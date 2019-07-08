@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/saadbruno/cardapio-ru-ufpr#readme",
   "dependencies": {
-    "cron": "^1.7.1"
+    "cron": "^1.7.1",
+    "moment": "^2.24.0",
+    "node-html-parser": "^1.1.16"
   }
 }
