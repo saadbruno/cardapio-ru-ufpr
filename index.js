@@ -1,3 +1,4 @@
+require('dotenv').config();
 const fs = require('fs');
 const request = require('request');
 var HTMLParser = require('node-html-parser');
@@ -44,7 +45,7 @@ function parseCardapio(refeicao) {
 
 function sendWebhook(conteudo) {
 	
-	const url = '<URL AQUI>'; //to-do: sibstituir isso por env variables
+	const url = process.env.WEBHOOK;
 	request.post(
 	{
 		headers : { 'Content-type' : 'application/json' },
