@@ -1,4 +1,5 @@
 const fs = require('fs');
+const request = require('request');
 var HTMLParser = require('node-html-parser');
 var CronJob = require('cron').CronJob;
 var moment = require('moment');
@@ -32,7 +33,26 @@ function parseCardapio(refeicao) {
 
 		var refeicoes = cardapioHoje.split(/CAFÉ DA MANHÃ|ALMOÇO|JANTAR/gm); // separa o cardápio de hoje em café, almoço e jantar
 		console.log(refeicoes[refeicao]);
+
+		// envia webhook
+		// TO-DO: adicionar data e dia da semana aqui, antes do texto em si.
+		sendWebhook(refeicoes[refeicao]);
+
 	}
+
+}
+
+function sendWebhook(conteudo) {
+	
+	const url = '<URL AQUI>'; //to-do: sibstituir isso por env variables
+	request.post(
+	{
+		headers : { 'Content-type' : 'application/json' },
+		url,
+		form : {value1: conteudo}
+	},
+	(error, res, body) => console.log(error, body, res.statusCode)
+	);
 
 }
 
