@@ -8,9 +8,22 @@ var moment = require('moment');
 moment.locale('pt-br');  
 console.log('Good morning, master!\n\n');
 
-function parseCardapio(refeicao) {
+// função separada só pra pegar o cardápio no site, que depois chama a função parseCardapio.
+// feito dessa forma porque o request() é assíncrono
+function pegaCardapio(refeicao) {
+    request("http://www.pra.ufpr.br/portal/ru/ru-central/", function (error, response, body) {
+        if (!error) {
+            parseCardapio(body, refeicao);
+        } else {
+            console.log(error);
+        }
+    });
+}
 
-	var cardapioRaw = fs.readFileSync('./exemplos/cardapio.html','utf8'); // Le o cardapio salvo local, pra testes
+function parseCardapio(html, refeicao) {
+
+	//var cardapioRaw = fs.readFileSync('./exemplos/cardapio.html','utf8'); // Le o cardapio salvo local, pra testes
+	var cardapioRaw = html; // Le o cardapio salvo local, pra testes
 	//console.log (cardapioRaw);
 	var cardapio = HTMLParser.parse(cardapioRaw);
 	var cardapioParse = cardapio.querySelector('#post').structuredText;
@@ -61,7 +74,7 @@ function parseCardapio(refeicao) {
 			console.log(':: CONTEUDO:\n\n' + conteudo + '\n');
 			// envia webhook
 			sendWebhook(conteudo);
-			
+
 		} else {
 
 			// monta string com todas as informações pra postagem
@@ -89,7 +102,7 @@ function sendWebhook(conteudo) {
 
 }
 
-parseCardapio(3); // 1 pra café, 2 pra almoço, 3 pra jantar
+pegaCardapio(3); // 1 pra café, 2 pra almoço, 3 pra jantar
 
 
 // café da manhã cron
