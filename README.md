@@ -5,6 +5,7 @@ Um bot que pega o cardápio do RU no site da PRA e solta um Webhook com os dados
 * Crie um arquivo `.env` na raiz do projeto, com a URL para o webhook desejado, seguindo a seguinte formatação:
 ```
 WEBHOOK=https://maker.ifttt.com/trigger/{event}/with/key/{webhook_key}
+CARDAPIO=http://www.pra.ufpr.br/portal/ru/ru-central/
 ```
 ## Docker (recomendado):
 Caso vá utilizar o Docker, o setup é simples:
