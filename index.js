@@ -6,12 +6,12 @@ var CronJob = require('cron').CronJob;
 var moment = require('moment');
 
 moment.locale('pt-br');  
-console.log('Good morning, master!\n\n');
+console.log('App rodando!\n\n');
 
 // função separada só pra pegar o cardápio no site, que depois chama a função parseCardapio.
 // feito dessa forma porque o request() é assíncrono
 function pegaCardapio(refeicao) {
-    request("http://www.pra.ufpr.br/portal/ru/ru-central/", function (error, response, body) {
+    request(process.env.CARDAPIO, function (error, response, body) {
         if (!error) {
             parseCardapio(body, refeicao);
         } else {
@@ -48,7 +48,7 @@ function parseCardapio(html, refeicao) {
 	if (cardapioParse.includes(dataHoje) == false) { // se o cardápio não tiver a data de hoje
 
 		// monta string com todas as informações pra postagem
-		var conteudo = moment().format('DD/MM - dddd') + ', '+ refeicaoString +':\n' + "Cardápio não atualizado no site da PRA. :(";
+		var conteudo = moment().format('DD/MM - dddd') + ', '+ refeicaoString +':\n' + "Cardápio de hoje não econtrado no site da PRA. :(";
 		console.log(':: AVISO: data de hoje não encontrada no cardáipio');
 		console.log(':: CONTEUDO:\n\n' + conteudo + '\n');
 
@@ -57,15 +57,15 @@ function parseCardapio(html, refeicao) {
 
 	} else { // se o cardápio tiver a data de hoje
 
-		console.log('cardápio de hoje encontrado!');
+		console.log(':: cardápio de hoje encontrado!');
 		var cardapioSplit = cardapioParse.split(/\d\d\/\d\d/igm); // separa um array, cada um com o cardápio completo de cada dia.
 		var cardapioMatch = cardapioParse.match(/\d\d\/\d\d/igm); // cria um array com as datas listadas no cardapio (pra utilizar o índice depois)
 
 		var cardapioHoje = (cardapioSplit[cardapioMatch.indexOf(dataHoje)+1]); // cria uma var com o cardápio de hoje, utilizando o index + 1 do array da data
-		//console.log(cardapioHoje);
+		console.log('\n:: cardapioHoje\n' + cardapioHoje);
 
 		var refeicoes = cardapioHoje.split(/CAFÉ DA MANHÃ|ALMOÇO|JANTAR/gm); // separa o cardápio de hoje em café, almoço e jantar
-		console.log(refeicoes);
+		console.log('\n:: refeicoes\n' + refeicoes);
 
 		if(refeicoes[refeicao] === undefined) { // se não encontrar a refeição selecionada
 
@@ -102,20 +102,20 @@ function sendWebhook(conteudo) {
 
 }
 
-pegaCardapio(3); // 1 pra café, 2 pra almoço, 3 pra jantar
+//pegaCardapio(3); // teste local assim que o app é lançado
 
 
 // café da manhã cron
 new CronJob('0 0 6 * * *', function() {
-	parseCardapio(1);
+	pegaCardapio(1);
 }, null, true, 'America/Sao_Paulo');
 
 // almoço cron
 new CronJob('0 30 10 * * *', function() {
-	parseCardapio(2);
+	pegaCardapio(2);
 }, null, true, 'America/Sao_Paulo');
 
 // jantar cron
 new CronJob('0 0 17 * * *', function() {
-	parseCardapio(3);
+	pegaCardapio(3);
 }, null, true, 'America/Sao_Paulo');
