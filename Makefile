@@ -9,6 +9,9 @@ rebuild:
 run:
 	docker run -d --restart=unless-stopped --name cardapio-ru-ufpr cardapio-ru-ufpr 
 
+run-develop:
+	docker run -d --name cardapio-ru-ufpr cardapio-ru-ufpr 
+
 stop:
 	docker stop cardapio-ru-ufpr && docker container rm cardapio-ru-ufpr
 
