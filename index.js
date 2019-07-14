@@ -5,12 +5,9 @@ var HTMLParser = require('node-html-parser');
 var CronJob = require('cron').CronJob;
 var moment = require('moment');
 
+moment.locale('pt-br');  
+console.log();
 console.log('Good morning, master!\n\n');
-
-
-// new CronJob('*/10 * * * * *', function() {
-// 	console.log('it works!');
-//   }, null, true, 'America/Los_Angeles');
 
 function parseCardapio(refeicao) {
 
@@ -33,11 +30,28 @@ function parseCardapio(refeicao) {
 		//console.log(cardapioHoje);
 
 		var refeicoes = cardapioHoje.split(/CAFÉ DA MANHÃ|ALMOÇO|JANTAR/gm); // separa o cardápio de hoje em café, almoço e jantar
-		console.log(refeicoes[refeicao]);
+		//console.log(refeicoes[refeicao]);
 
+		// determina string da refeição pra inserir no conteúdo
+		var refeicaoString = '';
+		switch(refeicao) {
+			case 1:
+				refeicaoString = 'Café da manhã'
+			  	break;
+			case 2:
+				refeicaoString = 'Almoço'
+				break;
+			case 3:
+				refeicaoString = 'Jantar'
+				break;
+			default:
+		  }
+
+		// monta string com todas as informações pra postagem
+		var conteudo = moment().format('DD/MM - dddd') + ', '+ refeicaoString +':\n' + refeicoes[refeicao];
+		console.log(':: CONTEUDO:\n\n' + conteudo + '\n');
 		// envia webhook
-		// TO-DO: adicionar data e dia da semana aqui, antes do texto em si.
-		sendWebhook(refeicoes[refeicao]);
+		sendWebhook(conteudo);
 
 	}
 
@@ -58,3 +72,19 @@ function sendWebhook(conteudo) {
 }
 
 parseCardapio(3); // 1 pra café, 2 pra almoço, 3 pra jantar
+
+
+// café da manhã cron
+new CronJob('0 0 6 * * *', function() {
+	parseCardapio(1);
+}, null, true, 'America/Sao_Paulo');
+
+// almoço cron
+new CronJob('0 30 10 * * *', function() {
+	parseCardapio(2);
+}, null, true, 'America/Sao_Paulo');
+
+// jantar cron
+new CronJob('0 0 17 * * *', function() {
+	parseCardapio(3);
+}, null, true, 'America/Sao_Paulo');
