@@ -4,9 +4,10 @@ const request = require('request');
 var HTMLParser = require('node-html-parser');
 var CronJob = require('cron').CronJob;
 var moment = require('moment');
+var pjson = require('./package.json');
 
 moment.locale('pt-br');  
-console.log('App rodando!\n\n');
+console.log('=====================\nCardápio RU UFPR bot\n' + 'Versão ' + pjson.version + '\n=====================\n');
 
 // função separada só pra pegar o cardápio no site, que depois chama a função parseCardapio.
 // feito dessa forma porque o request() é assíncrono
