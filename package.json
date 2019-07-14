@@ -1,0 +1,26 @@
+{
+  "name": "cardapio-ru-ufpr",
+  "version": "1.0.0",
+  "description": "Um bot que pega o cardápio do RU no site da PRA e solta um Webhook com os dados",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saadbruno/cardapio-ru-ufpr.git"
+  },
+  "author": "Bruno Saad Marques",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/saadbruno/cardapio-ru-ufpr/issues"
+  },
+  "homepage": "https://github.com/saadbruno/cardapio-ru-ufpr#readme",
+  "dependencies": {
+    "cron": "^1.7.1",
+    "dotenv": "^8.0.0",
+    "moment": "^2.24.0",
+    "node-html-parser": "^1.1.16",
+    "request": "^2.88.0"
+  }
+}
