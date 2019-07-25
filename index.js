@@ -71,7 +71,7 @@ function parseCardapio(html, refeicao) {
 		if(refeicoes[refeicao] === undefined) { // se não encontrar a refeição selecionada
 
 			var conteudo = moment().format('DD/MM - dddd') + ', '+ refeicaoString +':\n' + cardapioParse.split(/\*/igm)[0];
-			console.log(':: AVISO: Data de hoje encontrada, porém não foi encontrada a refeição selecionada. Ou é um erro de digitação, ou é um comunicado incluindo a data de hoje. Postando cardápio completo.');
+			console.log('\n:: AVISO: Data de hoje encontrada, porém não foi encontrada a refeição selecionada. Ou é um erro de digitação, ou é um comunicado incluindo a data de hoje. Postando cardápio completo.');
 			console.log(':: CONTEUDO:\n\n' + conteudo + '\n');
 			// envia webhook
 			sendWebhook(conteudo);
@@ -79,8 +79,8 @@ function parseCardapio(html, refeicao) {
 		} else {
 
 			// monta string com todas as informações pra postagem
-			var conteudo = moment().format('DD/MM - dddd') + ', '+ refeicaoString +':\n' + refeicoes[refeicao];
-			console.log(':: CONTEUDO:\n\n' + conteudo + '\n');
+			var conteudo = moment().format('DD/MM - dddd') + ', '+ refeicaoString +':\n\n' + refeicoes[refeicao].trim().split("\n").join(",\n");
+			console.log('\n:: CONTEUDO:\n\n' + conteudo + '\n');
 			// envia webhook
 			sendWebhook(conteudo);
 
