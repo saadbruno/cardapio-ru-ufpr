@@ -1,6 +1,6 @@
 {
   "name": "cardapio-ru-ufpr",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "description": "Um bot que pega o cardápio do RU no site da PRA e solta um Webhook com os dados",
   "main": "index.js",
   "scripts": {
