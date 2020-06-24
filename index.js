@@ -54,7 +54,7 @@ function parseCardapio(html, refeicao) {
 		console.log(':: CONTEUDO:\n\n' + conteudo + '\n');
 
 		// envia webhook
-		sendWebhook(conteudo);
+		// sendWebhook(conteudo);
 
 	} else { // se o cardápio tiver a data de hoje
 
